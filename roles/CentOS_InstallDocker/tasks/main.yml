@@ -28,7 +28,7 @@
      copy:
        dest: "~/docker/dockerfile"
        content: |
-         FROM ubuntu
+         FROM centos
          MAINTAINER seruelas <qrkhseruelas@tip.edu.ph>
          # Skip Prompts
          ARG DEBIAN_FRONTEND=noninteractive
