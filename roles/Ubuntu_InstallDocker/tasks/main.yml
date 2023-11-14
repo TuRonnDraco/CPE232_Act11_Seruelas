@@ -21,12 +21,12 @@
 
   -  name: Create dockerfile in Docker Directory in Ubuntu
      file:
-       path: "~/docker/dockerfile"
+       path: ~/docker/dockerfile
        state: touch
 
   -  name: Modify dockerfile with Content in Ubuntu
      copy:
-       dest: "~/docker/dockerfile"
+       dest: ~/docker/dockerfile
        content: |
          FROM ubuntu
          MAINTAINER seruelas <qrkhseruelas@tip.edu.ph>
@@ -35,8 +35,16 @@
          # Update Packages
          RUN apt update; apt dist-upgrade -y
          # Install MariaDB and Apache2
-         RUN apt install -y mariadb-server apache2
+         RUN apt install -y apache2
+         RUN apt install -y mariadb-client-core-10.6
          # Set entrypoint
          ENTRYPOINT apache2ctl -D FOREGROUND
-         ENTRYPOINT mariadb-server -D FOREGROUND
 
+  -  name: Create container for apache2-mariadb in Ubuntu
+     shell: |
+       cd ~/docker
+       docker build -t apache2-mariadb .
+
+  -  name: Run container, apache2-mariadb in Ubuntu
+     shell: |
+       docker run -d -it -p 8080:80 apache2-mariadb
